@@ -1,5 +1,6 @@
 version: '2'
 services:
+  #Zookeeper Service
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     hostname: zookeeper
@@ -9,7 +10,10 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - 22181:2181
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper/data
   
+  #Kafka broker Service
   kafka:
     image: confluentinc/cp-kafka:latest
     hostname: kafka
@@ -26,8 +30,48 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+
+  #InfluxDB Service
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8086:8086"
+    environment:
+        DOCKER_INFLUXDB_INIT_MODE: setup
+        DOCKER_INFLUXDB_INIT_USERNAME: admin
+        DOCKER_INFLUXDB_INIT_PASSWORD: password
+        DOCKER_INFLUXDB_INIT_ORG: simple-trader
+        DOCKER_INFLUXDB_INIT_BUCKET: simple-trader
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
 
 networks:
   default:
     name: 'simple-trader'
     external: true
+
+#Volumes
+volumes:
+  zookeeper-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/zookeeper
+  kafka-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/kafka
+  influxdb-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/influxdb

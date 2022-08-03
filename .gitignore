@@ -1,1 +1,3 @@
 data/kafka/**
+data/zookeeper/**
+data/influxdb/**
