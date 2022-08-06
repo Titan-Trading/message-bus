@@ -43,7 +43,7 @@ services:
     restart: unless-stopped
     # tty: true
     ports:
-      - "8086:8086"
+      - "8087:8086"
     environment:
         DOCKER_INFLUXDB_INIT_MODE: setup
         DOCKER_INFLUXDB_INIT_USERNAME: admin
