@@ -94,8 +94,8 @@ networks:
     external: true
 
 #Volumes
-volumes:
+# volumes:
 #   zookeeper-data:
 #   kafka-data:
 #   influxdb-data:
-  redis-data:
+  # redis-data:
