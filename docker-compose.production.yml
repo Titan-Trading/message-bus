@@ -11,8 +11,8 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - 22181:2181
-    volumes:
-      - zookeeper-data:/var/lib/zookeeper/data
+    # volumes:
+    #   - zookeeper-data:/var/lib/zookeeper/data
   
   #Kafka broker Service
   kafka:
@@ -33,8 +33,8 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_CREATE_TOPICS: "service-registry:10:1,socket-gateway:10:1,exchanges:10:1,bot-sessions:10:1,exchange-accounts:10:1"
-    volumes:
-      - kafka-data:/var/lib/kafka/data
+    # volumes:
+    #   - kafka-data:/var/lib/kafka/data
 
   # Setup kafka topics
   init-kafka:
@@ -72,8 +72,8 @@ services:
         DOCKER_INFLUXDB_INIT_PASSWORD: password
         DOCKER_INFLUXDB_INIT_ORG: simple-trader
         DOCKER_INFLUXDB_INIT_BUCKET: simple-trader
-    volumes:
-      - influxdb-data:/var/lib/influxdb2
+    # volumes:
+    #   - influxdb-data:/var/lib/influxdb2
 
   #Redis Service
   redis:
@@ -94,8 +94,8 @@ networks:
     external: true
 
 #Volumes
-volumes:
-  zookeeper-data:
-  kafka-data:
-  influxdb-data:
-  redis-data:
+# volumes:
+#   zookeeper-data:
+#   kafka-data:
+#   influxdb-data:
+#   redis-data:
