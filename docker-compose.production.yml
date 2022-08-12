@@ -83,10 +83,10 @@ services:
     command: redis-server --requirepass password
     ports:
      - "6379:6379"
-    volumes:
-     - redis-data:/var/lib/redis
     environment:
      - REDIS_REPLICATION_MODE=master
+    # volumes:
+    #  - redis-data:/var/lib/redis
 
 networks:
   default:
@@ -94,8 +94,8 @@ networks:
     external: true
 
 #Volumes
-# volumes:
+volumes:
 #   zookeeper-data:
 #   kafka-data:
 #   influxdb-data:
-#   redis-data:
+  redis-data:
