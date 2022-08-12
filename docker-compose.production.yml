@@ -74,6 +74,7 @@ services:
         DOCKER_INFLUXDB_INIT_BUCKET: simple-trader
     volumes:
       - influxdb-data:/var/lib/influxdb2
+
   #Redis Service
   redis:
     image: "redis:alpine"
@@ -95,26 +96,6 @@ networks:
 #Volumes
 volumes:
   zookeeper-data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./data/zookeeper
   kafka-data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./data/kafka
   influxdb-data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./data/influxdb
   redis-data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./data/redis
