@@ -11,8 +11,8 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - 22181:2181
-    # volumes:
-    #   - zookeeper-data:/var/lib/zookeeper/data
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper/data
   
   #Kafka broker Service
   kafka:
@@ -32,9 +32,9 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_CREATE_TOPICS: "service-registry:10:1,socket-gateway:10:1,exchanges:10:1,bot-sessions:10:1,exchange-accounts:10:1"
-    # volumes:
-    #   - kafka-data:/var/lib/kafka/data
+      KAFKA_CREATE_TOPICS: "service-registry:10:1,socket-gateway:10:1,exchanges:10:1,indicators:10:1,indicator-tests:10:1,bots:10:1,bot-sessions:10:1,exchange-accounts:10:1,system-logs:10:1"
+    volumes:
+      - kafka-data:/var/lib/kafka/data
 
   # Setup kafka topics
   init-kafka:
@@ -52,8 +52,12 @@ services:
       kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic service-registry --replication-factor 1 --partitions 10
       kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic socket-gateway --replication-factor 1 --partitions 10
       kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic exchanges --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic indicators --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic indicator-tests --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic bots --replication-factor 1 --partitions 10
       kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic bot-sessions --replication-factor 1 --partitions 10
       kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic exchange-accounts --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic system-logs --replication-factor 1 --partitions 10
 
       echo -e 'Successfully created the following topics:'
       kafka-topics --bootstrap-server kafka:9092 --list
@@ -72,8 +76,8 @@ services:
         DOCKER_INFLUXDB_INIT_PASSWORD: password
         DOCKER_INFLUXDB_INIT_ORG: simple-trader
         DOCKER_INFLUXDB_INIT_BUCKET: simple-trader
-    # volumes:
-    #   - influxdb-data:/var/lib/influxdb2
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
 
   #Redis Service
   redis:
@@ -85,8 +89,8 @@ services:
      - "6379:6379"
     environment:
      - REDIS_REPLICATION_MODE=master
-    # volumes:
-    #  - redis-data:/var/lib/redis
+    volumes:
+     - redis-data:/var/lib/redis
 
 networks:
   default:
@@ -94,8 +98,8 @@ networks:
     external: true
 
 #Volumes
-# volumes:
-#   zookeeper-data:
-#   kafka-data:
-#   influxdb-data:
-  # redis-data:
+volumes:
+  zookeeper-data:
+  kafka-data:
+  influxdb-data:
+  redis-data:
